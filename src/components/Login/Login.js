@@ -41,7 +41,8 @@ function Login() {
         Navigate("/");
       })
       .catch((err) => {
-        console.log(err);
+        console.log(err.message);
+        toast(err.message.split("auth/")[1].split("-").join(" ").slice(0, -2));
         console.log(signInData);
         setSubmitButtonState(true);
       });
@@ -49,17 +50,17 @@ function Login() {
 
   return (
     <div className="form">
-      <div class="container ">
+      <div className="container ">
         <h2>Login </h2>
         <hr />
         <form>
-          <div class="mb-3">
-            <label for="exampleInputEmail1" class="form-label">
+          <div className="mb-3">
+            <label for="exampleInputEmail1" className="form-label">
               Email address
             </label>
             <input
               type="email"
-              class="form-control"
+              className="form-control"
               id="exampleInputEmail1"
               aria-describedby="emailHelp"
               onChange={(event) =>
@@ -70,13 +71,13 @@ function Login() {
               }
             />
           </div>
-          <div class="mb-3">
-            <label for="exampleInputPassword1" class="form-label">
+          <div className="mb-3">
+            <label for="exampleInputPassword1" className="form-label">
               Password
             </label>
             <input
               type="password"
-              class="form-control"
+              className="form-control"
               id="exampleInputPassword1"
               onChange={(event) =>
                 setSignInData((prev) => ({ ...prev, pass: event.target.value }))
@@ -107,7 +108,11 @@ function Login() {
         <div className="form-footer">
           <p>
             Don't have a account ?
-            <Link className="link" to="/  ">
+            <Link
+              className="link"
+              to="/signup
+              "
+            >
               Signup
             </Link>
           </p>

@@ -3,12 +3,23 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { auth } from "../../firebase";
 import { getFirestore, collection, addDoc } from "firebase/firestore";
-import { auth, app } from "../../firebase";
+import { app } from "../../firebase";
+
+const firestore = getFirestore(app);
 
 const notify = (e) => {
   if (e === "name") {
     toast("Please enter the name ");
+  } else if (e === "address") {
+    toast("Please enter the Address  ");
+  } else if (e === "number") {
+    toast("Please enter the Number ");
+  } else if (e === "numberL") {
+    toast("Please enter a valid Number ");
+  } else if (e === "gender") {
+    toast("Please select a Gender ");
   } else if (e === "email") {
     toast("Please enter the Email Id ");
   } else {
@@ -16,22 +27,58 @@ const notify = (e) => {
   }
 };
 
-const db = getFirestore(app); // add this line
-
 function Signup() {
+  const addData = async (uid) => {
+    const ress = await addDoc(collection(firestore, "users"), {
+      name: signUpData.name,
+      number: signUpData.number,
+      gender: signUpData.gender,
+      address: signUpData.address,
+      email: signUpData.email,
+      id: uid,
+    });
+    console.log(ress, "resData");
+  };
+
   const Navigate = useNavigate();
   const [submitButtonState, setSubmitButtonState] = useState(true);
   const [signUpData, setSignUpData] = useState({
     name: "",
+    address: "",
+    number: "",
+    gender: "",
     email: "",
     pass: "",
+    id: "",
   });
 
   const handleSubmission = (e) => {
     setSubmitButtonState(false);
+    console.log(signUpData);
+
     e.preventDefault();
     if (!signUpData.name) {
       notify("name");
+      setSubmitButtonState(true);
+      return;
+    }
+    if (!signUpData.address) {
+      notify("address");
+      setSubmitButtonState(true);
+      return;
+    }
+    if (!signUpData.number) {
+      notify("number");
+      setSubmitButtonState(true);
+      return;
+    }
+    if (signUpData.number.length !== 10) {
+      notify("numberL");
+      setSubmitButtonState(true);
+      return;
+    }
+    if (!signUpData.gender || signUpData.gender === "Select a Gender") {
+      notify("gender");
       setSubmitButtonState(true);
       return;
     }
@@ -52,20 +99,14 @@ function Signup() {
         await updateProfile(user, {
           displayName: signUpData.name,
         });
-
-        const usersCollection = collection(db, "users");
-        await addDoc(usersCollection, {
-          uid: user.uid,
-          name: signUpData.name,
-          email: signUpData.email,
-        });
-
+        console.log(user);
+        addData(user.uid);
         setSubmitButtonState(true);
         Navigate("/");
       })
       .catch((err) => {
         console.log(err);
-        console.log(signUpData);
+        toast(err.message.split("auth/")[1].split("-").join(" ").slice(0, -2));
         setSubmitButtonState(true);
       });
   };
@@ -87,6 +128,58 @@ function Signup() {
                 setSignUpData((prev) => ({ ...prev, name: event.target.value }))
               }
             />
+          </div>
+          <div className="mb-3">
+            <label for="exampleInputAddress" className="form-label">
+              Address
+            </label>
+            <input
+              className="form-control"
+              id="exampleInputAddress1"
+              aria-describedby="AddressHelp"
+              onChange={(event) =>
+                setSignUpData((prev) => ({
+                  ...prev,
+                  address: event.target.value,
+                }))
+              }
+            />
+          </div>
+          <div className="mb-3">
+            <label for="exampleInputNumber1" className="form-label">
+              Phone Number
+            </label>
+            <input
+              type="number"
+              className="form-control"
+              id="exampleInputNumber1"
+              aria-describedby="numberHelp"
+              onChange={(event) =>
+                setSignUpData((prev) => ({
+                  ...prev,
+                  number: event.target.value,
+                }))
+              }
+            />
+          </div>
+          <div className="mb-3">
+            <label for="floatingSelect">Gender</label>
+            <select
+              className="form-select"
+              id="floatingSelect"
+              aria-label="Floating label select example"
+              // defaultValue="select"
+              onChange={(event) =>
+                setSignUpData((prev) => ({
+                  ...prev,
+                  gender: event.target.value,
+                }))
+              }
+            >
+              <option selected>Select a Gender</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+            </select>
           </div>
           <div className="mb-3">
             <label for="exampleInputEmail1" className="form-label">
