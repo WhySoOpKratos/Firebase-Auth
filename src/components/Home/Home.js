@@ -25,6 +25,10 @@ function Home(props) {
       });
   };
   const getData = async () => {
+    if (props.uid) {
+      console.log(props.uid);
+      Navigate("/login");
+    }
     const ref = collection(firestore, "users");
     const q = query(ref, where("id", "==", props.uid));
     const userData = await getDocs(q);

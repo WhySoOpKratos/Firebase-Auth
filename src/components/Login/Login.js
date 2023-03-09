@@ -38,7 +38,7 @@ function Login() {
       .then((res) => {
         console.log(res);
         setSubmitButtonState(true);
-        Navigate("/");
+        Navigate("/home");
       })
       .catch((err) => {
         console.log(err.message);

@@ -22,9 +22,9 @@ function App() {
       <BrowserRouter>
         <div className="container-fluid app">
           <Routes>
-            <Route path="/" element={<Home uid={userUid} />} />
+            <Route path="/home" element={<Home uid={userUid} />} />
             <Route path="/signup" element={<Signup />} />
-            <Route path="/login" element={<Login />} />
+            <Route path="/" element={<Login />} />
           </Routes>
         </div>
       </BrowserRouter>

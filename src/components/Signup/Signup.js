@@ -102,7 +102,7 @@ function Signup() {
         console.log(user);
         addData(user.uid);
         setSubmitButtonState(true);
-        Navigate("/");
+        Navigate("/home");
       })
       .catch((err) => {
         console.log(err);
@@ -235,7 +235,7 @@ function Signup() {
         <div className="form-footer" style={{ fontSize: "2vh" }}>
           <p>
             Already have a account ?
-            <Link className="link" to="/login">
+            <Link className="link" to="/">
               Login
             </Link>
           </p>
