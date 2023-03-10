@@ -78,7 +78,14 @@ function Home(props) {
       </nav>
       <table
         className="table"
-        style={{ backgroundColor: "white", marginTop: "1vh", color: "#9A03FF" }}
+        style={{
+          backgroundColor: "white",
+          marginTop: "1vh",
+          color: "rgb(154, 3, 255)",
+          maxWidth: "99vw",
+          display: "block",
+          overflowX: "scroll",
+        }}
       >
         <thead>
           <tr>
