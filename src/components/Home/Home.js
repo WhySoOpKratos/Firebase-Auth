@@ -18,17 +18,17 @@ function Home(props) {
   const handleSignOut = () => {
     signOut(getAuth())
       .then(() => {
-        Navigate("/login");
+        Navigate("/");
       })
       .catch((error) => {
         console.log(error);
       });
   };
   const getData = async () => {
-    if (props.uid) {
-      console.log(props.uid);
-      Navigate("/login");
-    }
+    // if (props.uid) {
+    //   console.log(props.uid);
+    //   Navigate("/login");
+    // }
     const ref = collection(firestore, "users");
     const q = query(ref, where("id", "==", props.uid));
     const userData = await getDocs(q);
